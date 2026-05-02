@@ -1,5 +1,6 @@
 import { Request, Response, request } from 'express';
 import { AppError } from '../utils/app-error';
+import { z } from 'zod';
 
 class ProductsController {
 /**
@@ -18,8 +19,14 @@ index(request: Request, response: Response) {
 }
 
 create(request: Request, response: Response) {
-   const { name, price} = request.body
+   const bodySchema = z.object ({
+    name: z.string( { required_error: "O nome é obrigatório!!!" }).trim().min(6, { message: "O nome deve ter pelo menos 6 caracteres!!!" }),
+    price: z.number({ required_error: "O preço é obrigatório!!!" }).positive({ message: "O preço deve ser maior que zero!!!" }) // .nullish(), pode ser nulo ou undefined
+   })
 
+  const { name, price } = bodySchema.parse(request.body)
+
+   /*
    if (!name) {
     throw new AppError("O nome é obrigatório!!!", 401)
    }
@@ -36,7 +43,7 @@ create(request: Request, response: Response) {
     throw new AppError("O preço deve ser maior que zero!!!", 401)
    }
 
-
+*/
 
  //  throw new Error("Erro ao criar produto")
  // throw new AppError("Erro ao criar produto!!!")

@@ -1,12 +1,13 @@
 # API REST com Node.js e TypeScript
 
-API REST desenvolvida com Node.js, Express e TypeScript, aplicando boas práticas de organização de código com separação em rotas, controllers e middlewares.
+API REST desenvolvida com Node.js, Express e TypeScript, aplicando boas práticas de organização de código com separação em rotas, controllers e middlewares. Validação de dados com Zod.
 
 ## Tecnologias
 
 - [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [Zod](https://zod.dev/) — validação de schema
 - [tsx](https://github.com/privatenumber/tsx)
 
 ## Estrutura do Projeto
@@ -75,13 +76,17 @@ Corpo da requisição (JSON):
 }
 ```
 
-Validações:
+Validações (via Zod):
 - `name` é obrigatório e deve ter pelo menos 6 caracteres
 - `price` é obrigatório e deve ser maior que zero
 
 ## Tratamento de Erros
 
-A aplicação utiliza a classe `AppError` para erros esperados (ex: validações), retornando o status HTTP adequado. Erros inesperados retornam status `500`.
+| Tipo           | Status | Descrição                              |
+|----------------|--------|----------------------------------------|
+| `AppError`     | variável | Erros esperados (ex: regras de negócio) |
+| `ZodError`     | 400    | Falha na validação do corpo da requisição |
+| Outros         | 500    | Erro interno do servidor               |
 
 ## Autor
 
